@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import requests
 import pickle
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("TMDB_API_KEY")
 
 with open('movie_data.pkl', 'rb') as file:
   movies, cosin_sim = pickle.load(file)
@@ -15,7 +20,6 @@ def get_recommendation(title, cosin_sim=cosin_sim):
   return movies[['title','movie_id']].iloc[movie_indices]
 
 def fetch_poster(movie_id):
-  api_key = 'f5b71c5baf951c08a5c6d56116f090c1'
   url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}'
   response = requests.get(url)
   data = response.json()
